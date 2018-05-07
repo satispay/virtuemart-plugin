@@ -41,7 +41,7 @@ class plgVmPaymentSatispay extends vmPSPlugin {
       'amount_unit' => round($details->order_total * 100),
       'currency' => $currency,
 			'metadata' => array(
-				'order' => $details->virtuemart_order_id
+				'order_id' => $details->virtuemart_order_id
 			)
     ));
 
@@ -56,32 +56,35 @@ class plgVmPaymentSatispay extends vmPSPlugin {
 			case 'redirect':
 				$pm = vRequest::getInt('pm');
 
-				if (!($method = $this->getVmPluginMethod($pm)))
+				if (!($method = $this->getVmPluginMethod($pm))) {
 					return NULL;
+				}
 
 				$charge = \SatispayOnline\Charge::get(vRequest::getString('charge_id'));
 
-				$order = $charge->metadata->order;
+				$order = $charge->metadata->order_id;
 				$orderModel = VmModel::getModel('orders');
 				$order = $orderModel->getOrder($order);
 
 				$details = $order['details']['BT'];
 
-				if (vRequest::getString('ok') == 'true')
+				if (vRequest::getString('ok') == 'true') {
           header('Location: '.JURI::root().'index.php?option=com_virtuemart&view=orders&layout=details&order_number='.$details->order_number.'&order_pass='.$details->order_pass);
-        else
-          header('Location: '.JURI::root().'index.php?option=com_virtuemart&view=cart&Itemid='.$details->item_id.'&lang='.vRequest::getCmd('lang',''));
+				} else {
+					header('Location: '.JURI::root().'index.php?option=com_virtuemart&view=cart&Itemid='.$details->item_id.'&lang='.vRequest::getCmd('lang',''));
+				}
 				break;
 			case 'callback':
 				$uuid = vRequest::getString('uuid');
 				$pm = vRequest::getInt('pm');
 
-				if (!($method = $this->getVmPluginMethod($pm)))
+				if (!($method = $this->getVmPluginMethod($pm))) {
 					return NULL;
+				}
 
 				$charge = \SatispayOnline\Charge::get($uuid);
 
-				$order = $charge->metadata->order;
+				$order = $charge->metadata->order_id;
 				$orderModel = VmModel::getModel('orders');
 				$order = $orderModel->getOrder($order);
 
@@ -118,9 +121,9 @@ class plgVmPaymentSatispay extends vmPSPlugin {
 
 	function getTableSQLFields() {
 		$SQLfields = array(
-			'id'                          => 'int(1) UNSIGNED NOT NULL AUTO_INCREMENT',
-			'staging'         						=> 'smallint(1)',
-			'security_bearer'             => 'varchar(255)'
+			'id' => 'int(1) UNSIGNED NOT NULL AUTO_INCREMENT',
+			'staging' => 'smallint(1)',
+			'security_bearer' => 'varchar(255)'
 		);
 		return $SQLfields;
 	}
