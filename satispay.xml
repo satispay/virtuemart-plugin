@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<extension version="2.5" type="plugin" group="vmpayment" method="upgrade">
+  <name>Satispay</name>
+  <creationDate>May 9 2017</creationDate>
+  <author>Satispay</author>
+  <authorUrl>http://satispay.com</authorUrl>
+  <copyright>Copyright (C) 2017-2018. All rights reserved.</copyright>
+  <license>http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL</license>
+  <version>1.2.0</version>
+  <description>Satispay</description>
+  <files>
+    <filename plugin="satispay">satispay.php</filename>
+    <folder>language</folder>
+  </files>
+  <vmconfig>
+    <fields name="params">
+      <fieldset name="basic" addfieldpath="/plugins/vmpayment/satispay/satispay/fields">
+        <field class="" name="staging" type="list" default="0" label="VMPAYMENT_SATISPAY_STAGING" description="VMPAYMENT_SATISPAY_STAGING_DESC">
+          <option value="1">VMPAYMENT_SATISPAY_YES</option>
+          <option value="0">VMPAYMENT_SATISPAY_NO</option>
+        </field>
+        <field class="" name="security_bearer" type="text" label="VMPAYMENT_SATISPAY_SECURITY_BEARER" description="VMPAYMENT_SATISPAY_SECURITY_BEARER_DESC" />
+      </fieldset>
+    </fields>
+  </vmconfig>
+</extension>
